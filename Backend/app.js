@@ -1,13 +1,15 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import DBConnection from "./utils/DBConnection";
-// const DBConnection = require("./utils/DBConnection");
+import DBConnection from "./utils/DBConnection.js";
+import Routes from "./routes/index.js";
 
 const app = express();
 app.use(express.json({ extended: true }));
 app.use(cors());
 dotenv.config();
+
+app.use("/", Routes);
 
 const PORT = process.env.PORT || 5000;
 
