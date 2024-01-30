@@ -9,7 +9,7 @@ app.use(express.json({ extended: true }));
 app.use(cors());
 dotenv.config();
 
-app.use("/", Routes);
+app.use("/api", Routes);
 
 const PORT = process.env.PORT || 5000;
 
