@@ -1,13 +1,13 @@
 import React from 'react'
 import { useState } from 'react'
-import axios from "axios"
-import axiosConfig from '../axiosConfig'
+import axios from '../axiosConfig'
 import { Link } from 'react-router-dom'
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setpassword] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("user");
 
   const handelInput = (e) => {
     const clName = e.target.className;
@@ -15,17 +15,22 @@ const Register = () => {
     if (clName === "email") {
       setEmail(e.target.value);
     } else if (clName === "password") {
-      setpassword(e.target.value);
+      setPassword(e.target.value);
     } else if (clName === "name") {
       setName(e.target.value);
+    } else if (clName === "role") {
+      setRole(e.target.value);
     }
   }
 
   const handelSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(email, password);
-    const data = await axios.get("users", axiosConfig);
+    const response = await axios.post("register", {
+      name: name, email: email, password: password, role: role
+    });
+
+    console.log("registration response ::: ", response);
   }
 
   return (
@@ -44,6 +49,10 @@ const Register = () => {
         <div className="field">
           <span>Password</span>
           <input type="password" className="password" onChange={(e) => handelInput(e)} value={password} />
+        </div>
+        <div className="field">
+          <span>Role</span>
+          <input type="text" className="role" onChange={(e) => handelInput(e)} value={role} />
         </div>
 
         <button className="button">Submit</button>

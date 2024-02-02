@@ -1,10 +1,11 @@
 import React from 'react'
 import { useState } from 'react'
-import axios from "axios"
-import axiosConfig from '../axiosConfig'
+import axios from '../axiosConfig'
 import { Link } from 'react-router-dom'
+import AuthUser from "../Hooks/AuthUser"
 
 const Login = () => {
+    const { setAuth } = AuthUser();
     const [email, setEmail] = useState("");
     const [password, setpassword] = useState("");
 
@@ -21,8 +22,21 @@ const Login = () => {
     const handelSubmit = async (e) => {
         e.preventDefault();
 
-        console.log(email, password);
-        const data = await axios.get("users", axiosConfig);
+        const response = await axios.post("/login", {
+            email: email,
+            password: password
+        });
+        console.log("login response ::: ", response.data);
+
+        if (response.data.status) {
+            const { userDetails, accessToken } = response.data;
+            setAuth({
+                name: userDetails?.name,
+                email: userDetails?.email,
+                role: userDetails?.role,
+                accessToken
+            });
+        }
     }
 
     return (

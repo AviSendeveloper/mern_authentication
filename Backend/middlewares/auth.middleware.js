@@ -6,8 +6,11 @@ const isAuth = async (req, res, next) => {
         if (!authorization) throw new Error("Authorization token missing");
 
         const token = authorization.split(" ")[1];
-        const isTokenValid = await checkToken(token);
-        if (!isTokenValid) throw new Error("Unauthorize access");
+        const tokenDecoded = await checkToken(token);
+        if (!tokenDecoded) throw new Error("Unauthorize access");
+
+        // add user in request
+        req.user = tokenDecoded;
 
         next();
     } catch (error) {
